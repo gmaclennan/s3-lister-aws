@@ -1,6 +1,8 @@
 S3-Lister-AWS
 =============
 
+[![Build Status](https://travis-ci.org/gmaclennan/s3-lister-aws.svg?branch=master)](https://travis-ci.org/gmaclennan/s3-lister-aws)
+
 A simple library to stream all the files which are the contents of an s3 folder. Forked from [S3-Lister](https://github.com/segmentio/s3-lister) to use [aws-sdk](https://github.com/aws/aws-sdk-js) instead of [knox](https://github.com/Automattic/knox)
 
 
