@@ -1,9 +1,18 @@
 
 var assert   = require('assert')
-  , config     = require('./config.json')
+  , dotenv   = require('dotenv')
   , AWS     = require('aws-sdk')
   , S3Lister = require('../');
 
+dotenv.load();
+
+var config = {
+  accessKeyId: process.env.S3_ID,
+  secretAccessKey: process.env.S3_SECRET,
+  params: {
+    Bucket: process.env.S3_BUCKET
+  }
+};
 
 var client = new AWS.S3(config);
 
