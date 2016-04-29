@@ -1,11 +1,11 @@
 
 var assert   = require('assert')
-  , auth     = require('./auth.json')
-  , knox     = require('knox')
+  , config     = require('./config.json')
+  , AWS     = require('aws-sdk')
   , S3Lister = require('../');
 
 
-var client = knox.createClient(auth);
+var client = new AWS.S3(config);
 
 
 describe('S3Lister', function () {
@@ -30,7 +30,10 @@ describe('S3Lister', function () {
 
   before(function (done) {
     function upload(filename, cb) {
-      client.putBuffer(new Buffer(filename), filename, cb);
+      client.putObject({
+        Body: new Buffer(filename),
+        Key: filename
+      }, cb);
     }
 
     fileOperation(upload, done);
@@ -38,7 +41,11 @@ describe('S3Lister', function () {
 
 
   it ('should list all the files', function (done) {
-    var stream    = new S3Lister(client, { prefix : folder })
+    var stream    = new S3Lister(client, {
+        params: {
+          Prefix: folder
+        }
+      })
       , filesSeen = 0;
 
     stream
@@ -66,8 +73,10 @@ describe('S3Lister', function () {
 
   it('should list all the files if maxKeys < number of files', function (done) {
     var stream = new S3Lister(client, {
-      maxKeys : 6,
-      prefix  : folder
+      params: {
+        MaxKeys : 6,
+        Prefix  : folder
+      }
     });
 
     var filesSeen = 0;
@@ -86,9 +95,11 @@ describe('S3Lister', function () {
     var start = 4;
 
     var stream = new S3Lister(client, {
-      maxKeys : 6,
-      prefix  : folder,
-      start   : folder + '/' + start + '.txt'
+      start: folder + '/' + start + '.txt',
+      params: {
+        MaxKeys: 6,
+        Prefix: folder
+      }
     });
 
     var filesSeen = 0;
@@ -105,7 +116,7 @@ describe('S3Lister', function () {
 
   after(function (done) {
     function remove(filename, cb) {
-      client.deleteFile(filename, cb);
+      client.deleteObject({Key: filename}, cb);
     }
 
     fileOperation(remove, done);

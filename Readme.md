@@ -1,7 +1,7 @@
-S3-Lister
-=========
+S3-Lister-AWS
+=============
 
-A simple library to stream all the files which are the contents of an s3 folder.
+A simple library to stream all the files which are the contents of an s3 folder. Forked from [S3-Lister](https://github.com/segmentio/s3-lister) to use [aws-sdk](https://github.com/aws/aws-sdk-js) instead of [knox](https://github.com/Automattic/knox)
 
 
 ## Usage
@@ -9,13 +9,15 @@ A simple library to stream all the files which are the contents of an s3 folder.
 ```javascript
 // Print all the files for a given prefix.
 
-var client = knox.createClient({
-  key    : '<api-key-here>',
-  secret : '<secret-here>',
-  bucket : 'segmentio'
+var client = new AWS.S3({
+  accessKeyId: '<api-key-here>',
+  secretAccessKey : '<secret-here>',
+  params: {
+    Bucket : 'segmentio'
+  }
 });
 
-var lister = new S3Lister(client, {prefix : 'logs/api/a0z4'});
+var lister = new S3Lister(client, {params: {Prefix : 'logs/api/a0z4'}});
 
 lister
   .on('data',  function (data) { console.log(data.Key); })
@@ -32,11 +34,8 @@ lister
 In addition to the standard stream options, you can also pass in specific options:
 
 * start      - string to start with
-* prefix     - the prefix to list under
-* start      - s3 will return every key alphabetically after this string
-* delimiter  - the character you use to group keys
 * maxResults - maximum amount of keys to list in total
-* maxKeys    - maximum amount of keys in a batch, (limited to 1000)
+* params     - passed through to [`AWS.S3.listObjects`](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property)
 
 ## License
 

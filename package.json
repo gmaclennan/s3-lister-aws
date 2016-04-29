@@ -1,21 +1,36 @@
 {
-  "name": "s3-lister",
+  "name": "s3-lister-aws",
   "version": "0.1.0",
   "description": "Stream the file descriptions from all keys in an s3 bucket",
   "main": "lib/index.js",
-  "repository": "https://github.com/segmentio/s3-lister.git",
   "license": "MIT",
   "scripts": {
     "test": "mocha"
   },
   "dependencies": {
-    "readable-stream": "~1.0.2"
+    "object-assign": "^4.0.1",
+    "readable-stream": "^2.1.0"
   },
   "peerDependencies": {
-    "knox": ">=0.5.0"
+    "aws-sdk": "^2.3.7"
   },
   "devDependencies": {
-    "knox": "~0.8.3",
+    "aws-sdk": "^2.3.7",
     "mocha": "*"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gmaclennan/s3-lister-aws.git"
+  },
+  "contributors": [
+    "Segment.io <friends@segment.io>",
+    "Gregor MacLennan <gregor@ddem.us>"
+  ],
+  "bugs": {
+    "url": "https://github.com/gmaclennan/s3-lister-aws/issues"
+  },
+  "homepage": "https://github.com/gmaclennan/s3-lister-aws"
 }
